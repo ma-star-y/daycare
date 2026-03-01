@@ -1,0 +1,33 @@
+*{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Hiragino Kaku Gothic ProN',Meiryo,'Noto Sans JP',sans-serif;background:#f4f6f8;color:#102a43;margin:0;padding:12px}
+.container{max-width:780px;margin:0 auto}
+header{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+h1{font-size:20px;color:#0b3d91}
+.lead{font-size:14px;color:#334e68}
+.actions{display:flex;gap:8px;align-items:center}
+#printBtn{background:#0b3d91;color:#fff;border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
+.back-link{margin-left:auto;color:#0b3d91;text-decoration:none;font-size:13px}
+.card{background:#fff;border-radius:10px;padding:12px;margin-bottom:12px;box-shadow:0 1px 4px rgba(16,42,67,0.06)}
+.summary ul, .howto ol, .strategy ol, .extras ul{padding-left:18px}
+.facility{border:1px solid #e6eef8;padding:10px;margin-bottom:8px;border-radius:6px}
+.facility h3{margin:4px 0 8px;color:#0b3d91;font-size:14px}
+.meta{font-size:12px;color:#627d98;margin:4px 0}
+.status strong{color:#b00020}
+.rating{margin-top:6px}
+.qa-list{padding:6px 12px;background:#f8f9fa;border-radius:4px}
+.qa-list li{margin:4px 0;font-size:13px}
+.template-box{background:#f0f4ff;border-left:3px solid #0b3d91;padding:8px;border-radius:4px;margin:6px 0;font-size:12px;line-height:1.5}
+.muted{color:#627d98;font-size:13px}
+.small{font-size:12px}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:bold;margin:0 4px 8px 0}
+.badge-OK{background:#8ac926;color:#fff}
+.badge-warning{background:#ffca3a;color:#102a43}
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;font-size:12px}
+.pros{background:#f0f8f0;padding:6px;border-radius:4px;border-left:3px solid #8ac926}
+.cons{background:#fff8f0;padding:6px;border-radius:4px;border-left:3px solid #ff9800}
+.pros strong, .cons strong{display:block;margin-bottom:4px}
+.pros br, .cons br{display:block;content:'';margin:2px 0}
+#nursery-list-dynamic .facility{border:1px solid #e6eef8;padding:10px;margin-bottom:8px;border-radius:6px}
+@media (max-width:600px){body{padding:8px}.container{padding:0}.pros-cons{grid-template-columns:1fr}}
+@media print{body{background:#fff} .actions{display:none} .card{box-shadow:none;border:1px solid #ddd} header h1{font-size:18px}}
+
+

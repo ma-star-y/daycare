@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ぷよぷよ</title>
+  <link rel="stylesheet" href="puyo.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <div id="puyo-app">
+    <div id="puyo-left">
+      <h1>ぷよぷよ</h1>
+      <div class="info-box"><p>スコア</p><span id="puyo-score">0</span></div>
+      <div class="info-box"><p>チェイン</p><span id="puyo-chain">0</span></div>
+      <div class="info-box"><p>レベル</p><span id="puyo-level">1</span></div>
+      <a href="index.html" class="back">戻る</a>
+    </div>
+
+    <div id="puyo-center">
+      <canvas id="puyo-board" width="180" height="360"></canvas>
+      <div id="puyo-overlay" class="hidden">
+        <div id="puyo-overlay-content">
+          <h2 id="puyo-overlay-title">ゲームオーバー</h2>
+          <p id="puyo-overlay-score"></p>
+          <button id="puyo-restart">もう一度</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="puyo-right">
+      <div class="info-box"><p>次</p><canvas id="puyo-next" width="120" height="120"></canvas></div>
+      <div id="puyo-touch-controls">
+        <button id="p-left">◀</button>
+        <button id="p-right">▶</button>
+        <button id="p-rotate">⟳</button>
+        <button id="p-drop">↓</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="puyo.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(console.error);
+  </script>
+</body>
+</html>

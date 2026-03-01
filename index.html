@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>テトリス</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <div id="game-container">
+    <!-- CPU用コンテナ（必要時に表示） -->
+    <div id="cpu-container" class="hidden">
+      <h2>CPU</h2>
+      <canvas id="cpu-board" width="300" height="600"></canvas>
+      <div class="info-box">
+        <p>スコア</p>
+        <span id="cpu-score">0</span>
+      </div>
+    </div>
+    <div id="sidebar-left">
+      <h1>テトリス</h1>
+      <p style="text-align:center;margin:8px 0;"><a href="puyo.html" style="color:#fff;text-decoration:none;background:#e94560;padding:6px 10px;border-radius:6px;">ぷよぷよで遊ぶ</a></p>
+      <div class="info-box">
+        <p>スコア</p>
+        <span id="score">0</span>
+      </div>
+      <div class="info-box">
+        <p>レベル</p>
+        <span id="level">1</span>
+      </div>
+      <div class="info-box">
+        <p>ライン</p>
+        <span id="lines">0</span>
+      </div>
+    </div>
+
+    <div id="board-container">
+      <canvas id="board" width="300" height="600"></canvas>
+      <div id="overlay" class="hidden">
+        <div id="overlay-content">
+          <h2 id="overlay-title">ゲームオーバー</h2>
+          <p id="overlay-score"></p>
+          <button id="restart-btn">もう一度</button>
+        </div>
+        <!-- メニュー（開始前設定） -->
+        <div id="menu">
+          <h2>テトリス</h2>
+          <label>難易度:
+            <select id="difficulty-select">
+              <option value="1">1 - 楽</option>
+              <option value="2">2</option>
+              <option value="3" selected>3</option>
+              <option value="4">4</option>
+              <option value="5">5 - 激ムズ</option>
+            </select>
+          </label>
+          <label><input type="checkbox" id="cpu-toggle"> CPUと対戦する</label>
+          <button id="start-btn">スタート</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="sidebar-right">
+      <div class="info-box">
+        <p>次のピース</p>
+        <canvas id="next-piece" width="120" height="120"></canvas>
+      </div>
+      <div id="controls">
+        <h3>操作方法</h3>
+        <ul>
+          <li>← → : 移動</li>
+          <li>↑ : 回転</li>
+          <li>↓ : 落下</li>
+          <li>Space : 即落下</li>
+          <li>P : 一時停止</li>
+        </ul>
+      </div>
+      <!-- タッチ操作ボタン -->
+      <div id="touch-controls">
+        <button id="btn-left">◀</button>
+        <button id="btn-right">▶</button>
+        <button id="btn-rotate">⟳</button>
+        <button id="btn-drop">↓</button>
+        <button id="btn-harddrop">⇩</button>
+      </div>
+    </div>
+  </div>
+  <script src="tetris.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(console.error);
+    }
+  </script>
+</body>
+</html>

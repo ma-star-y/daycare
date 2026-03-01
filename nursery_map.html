@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>保育園マップ（梅田・中央本町地域）</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body{font-family:system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; margin:0; padding:0}
+    header{padding:12px;background:#0b3d91;color:#fff}
+    #map{height:60vh}
+    .sidebar{padding:12px}
+    .list-item{padding:8px;border-bottom:1px solid #eee}
+    .controls{margin:8px 0}
+    .muted{color:#666;font-size:0.9rem}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>保育園マップ — 梅田・中央本町地域（西新井栄町〜関町）</h1>
+  </header>
+  <div class="controls" style="padding:12px">
+    <button id="btnGeocode">地図を生成（住所から位置取得）</button>
+    <span class="muted">※初回は外部の位置検索（Nominatim）を使います。処理に数秒〜数十秒かかります。</span>
+  </div>
+  <div id="map"></div>
+  <div class="sidebar">
+    <h2>保育園一覧</h2>
+    <div id="list"></div>
+    <p class="muted">住所が正確でない場合は検索に失敗します。結果はその場でマーカー表示されます。</p>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="nursery_data.js"></script>
+  <script>
+    const map = L.map('map').setView([35.77, 139.79], 14);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19, attribution:'© OpenStreetMap contributors'}).addTo(map);
+
+    const listEl = document.getElementById('list');
+    const btn = document.getElementById('btnGeocode');
+
+    function addListItem(n){
+      const el = document.createElement('div'); el.className='list-item';
+      el.innerHTML = `<strong>(${n.ranking}) ${n.name}</strong><br><small>${n.address} ${n.phone || ''}</small>`;
+      return el;
+    }
+
+    // 表示のみ（座標があればすぐ描画）
+    nurseries.forEach(n=>{ listEl.appendChild(addListItem(n)); });
+
+    async function geocodeAddress(addr){
+      const q = encodeURIComponent(addr + ' 足立区 東京');
+      const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${q}`;
+      // ブラウザではカスタム User-Agent ヘッダーを送れないため、ヘッダーは指定しない
+      const res = await fetch(url);
+      if(!res.ok) return null;
+      const data = await res.json();
+      if(data && data[0]) return {lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon)};
+      return null;
+    }
+
+    function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+    btn.addEventListener('click', async ()=>{
+      btn.disabled = true; btn.textContent = 'ジオコーディング中…（各園を順次処理中）';
+      for(let i=0;i<nurseries.length;i++){
+        const n = nurseries[i];
+        const item = document.createElement('div'); item.className='list-item';
+        item.innerHTML = `<strong>(${n.ranking}) ${n.name}</strong><br><small>${n.address} ${n.phone || ''}</small><div class="muted" id="status-${i}">処理中…</div>`;
+        listEl.replaceChild(item, listEl.children[i]);
+        try{
+          // 既に座標がある場合は再検索不要
+          if(n.lat && n.lon){
+            const marker = L.marker([n.lat, n.lon]).addTo(map);
+            marker.bindPopup(`<strong>(${n.ranking}) ${n.name}</strong><br>${n.address}<br>☎ ${n.phone}`);
+            document.getElementById(`status-${i}`).textContent = '座標既登録: 表示済';
+            if(i===0) map.setView([n.lat,n.lon],15);
+          } else {
+            const coords = await geocodeAddress(n.address);
+            if(coords){
+              n.lat = coords.lat; n.lon = coords.lon;
+              const marker = L.marker([n.lat, n.lon]).addTo(map);
+              marker.bindPopup(`<strong>(${n.ranking}) ${n.name}</strong><br>${n.address}<br>☎ ${n.phone}`);
+              document.getElementById(`status-${i}`).textContent = `座標取得: ${n.lat.toFixed(5)}, ${n.lon.toFixed(5)}`;
+              if(i===0) map.setView([n.lat,n.lon],15);
+            } else {
+              document.getElementById(`status-${i}`).innerHTML = `座標取得失敗（<a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(n.address+' 足立区 東京')}">Googleで開く</a>）`;
+            }
+          }
+        } catch(e){
+          console.error(e);
+          document.getElementById(`status-${i}`).textContent = 'エラー発生';
+        }
+        await sleep(1100);
+      }
+      btn.textContent = '地図生成 完了';
+    });
+  </script>
+</body>
+</html>

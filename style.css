@@ -1,0 +1,247 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #1a1a2e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: 'Courier New', monospace;
+  color: #eee;
+}
+
+#game-container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+#sidebar-left,
+#sidebar-right {
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 10px;
+}
+
+h1 {
+  color: #e94560;
+  font-size: 28px;
+  text-align: center;
+  text-shadow: 0 0 10px #e94560;
+  letter-spacing: 2px;
+}
+
+.info-box {
+  background: #16213e;
+  border: 2px solid #0f3460;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+
+.info-box p {
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.info-box span {
+  font-size: 28px;
+  font-weight: bold;
+  color: #e94560;
+}
+
+#board-container {
+  position: relative;
+}
+
+/* CPUボード */
+#cpu-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+}
+#cpu-container.hidden {
+  display: none;
+}
+
+#cpu-board {
+  display: block;
+  border: 3px solid #0f3460;
+  border-radius: 4px;
+  background: #0a0a1a;
+  box-shadow: 0 0 20px rgba(233, 69, 96, 0.3);
+}
+
+/* タッチコントロール */
+#touch-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+#touch-controls button {
+  width: 50px;
+  height: 50px;
+  font-size: 18px;
+  border: none;
+  border-radius: 6px;
+  background: #e94560;
+  color: white;
+}
+#touch-controls button:active {
+  transform: scale(0.95);
+}
+
+/* モバイル対応 */
+@media (max-width: 600px) {
+  #game-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  #sidebar-left,
+  #sidebar-right {
+    width: auto;
+  }
+  #cpu-container {
+    margin: 10px 0;
+  }
+}
+
+#board {
+  display: block;
+  border: 3px solid #0f3460;
+  border-radius: 4px;
+  background: #0a0a1a;
+  box-shadow: 0 0 20px rgba(233, 69, 96, 0.3);
+}
+
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+}
+
+#overlay.hidden {
+  display: none;
+}
+
+#overlay-content {
+  text-align: center;
+}
+
+#menu {
+  margin-top: 16px;
+  display: none;
+}
+#menu label {
+  display: block;
+  color: #eee;
+  margin: 8px 0;
+}
+#menu select,
+#menu input[type="checkbox"] {
+  margin-left: 4px;
+}
+#menu button {
+  background: #e94560;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+#menu button:hover { background: #c73652; }
+#menu button:active { transform: scale(0.98); }
+
+#overlay-title {
+  font-size: 36px;
+  color: #e94560;
+  text-shadow: 0 0 15px #e94560;
+  margin-bottom: 16px;
+}
+
+#overlay-score {
+  font-size: 18px;
+  color: #eee;
+  margin-bottom: 24px;
+}
+
+#restart-btn {
+  background: #e94560;
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  font-size: 18px;
+  font-family: 'Courier New', monospace;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+#restart-btn:hover {
+  background: #c73652;
+  transform: scale(1.05);
+}
+
+#restart-btn:active {
+  transform: scale(0.98);
+}
+
+#next-piece {
+  display: block;
+  margin: 8px auto 0;
+  background: #0a0a1a;
+  border-radius: 4px;
+}
+
+#controls {
+  background: #16213e;
+  border: 2px solid #0f3460;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+#controls h3 {
+  font-size: 12px;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+#controls ul {
+  list-style: none;
+  font-size: 12px;
+  color: #ccc;
+  line-height: 1.8;
+}
+
+#controls li {
+  border-bottom: 1px solid #0f3460;
+  padding: 2px 0;
+}
+
+#controls li:last-child {
+  border-bottom: none;
+}

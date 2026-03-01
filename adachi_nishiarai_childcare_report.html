@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>足立区西新井駅 保育園レポート</title>
+<link rel="stylesheet" href="report.css">
+</head>
+<body>
+<main class="container">
+  <header>
+    <h1>足立区・西新井駅周辺<br>保育園まとめレポート</h1>
+    <p class="lead">認可・認可外を含むおすすめランキングと、今から0歳児を入れるための実戦的HOW‑TO</p>
+    <div class="actions">
+      <button id="printBtn">🖨 PDF出力（印刷）</button>
+      <a href="index.html" class="back-link">← テトリスに戻る</a>
+    </div>
+  </header>
+
+  <section class="summary card">
+    <h2>📌 調査概要</h2>
+    <ul>
+      <li><strong>対象範囲</strong>：西新井駅から徒歩15分圏内</li>
+      <li><strong>対象施設</strong>：認可保育園、認証保育所、認可外保育園、企業内保育など全種</li>
+      <li><strong>調査項目</strong>：基本情報（住所・電話・定員）、申込状況、空き枠、保育方針、料金、ユーザー評価</li>
+      <li><strong>情報時点</strong>：2026年3月1日（公開情報ベース）</li>
+    </ul>
+  </section>
+
+  <section class="howto card">
+    <h2>🎯 今から0歳児を入れるためのHOW‑TO（実戦戦略）</h2>
+    <ol>
+      <li><strong>【第1歩】役所に電話・窓口確認</strong><br>
+        足立区保育課に電話して、最新の「認可保育園空き状況」「入所手続き期限」「必要書類」を確認。毎月更新されるので、複数回確認が鉄則。</li>
+      <li><strong>【第2歩】複数申込準備</strong><br>
+        認可は『第一希望～第三希望』まで登録。認可外も同時に見学して申し込み（やぶりかぶり作戦）。落選時の「つなぎ」が重要。</li>
+      <li><strong>【第3歩】必要書類をすぐそろえる</strong><br>
+        出生予定日の記入、住民票、保護者の勤務証明、源泉徴収票など。職場に『早期発行』を事前に依頼しておく。</li>
+      <li><strong>【第4歩】見学でジャッジ軸を決める</strong><br>
+        保育方針・給食・送迎バス・延長保育対応・セキュリティ・先生の人数・離乳食対応。見学チェックシートを作っておくと比較が楽。</li>
+      <li><strong>【第5歩】キャンセル待ち登録（複数）</strong><br>
+        定員がいっぱいでも『キャンセル待ち』に登録可。複数園に登録して、月1～2回は役所に『状況確認』の電話を。</li>
+      <li><strong>【第6歩】認可外を短期つなぎ利用</strong><br>
+        認可の結果が出るまでの間、認可外の短期枠（数ヶ月）を活用。認可入園が決まったら辞める前提で申し込み。</li>
+      <li><strong>【第7歩】職場とコミュニケーション</strong><br>
+        育休終了時期を保育園の決定時期に合わせられるよう、職場に事前相談。勤務証明の発行も優先的にお願い。</li>
+    </ol>
+  </section>
+
+  <section class="checklist card">
+    <h2>✅ やることチェックリスト（すぐ実行可能）</h2>
+    <ul>
+      <li>☐ 足立区保育課に電話 → 電話番号をメモして最新情報確認</li>
+      <li>☐ 足立区のおたよりNET等で、公開されている『空き一覧』をダウンロード</li>
+      <li>☐ 第一～第三希望園を決定し、見学予約を入れる（着信待ちはメール優先推奨）</li>
+      <li>☐ 必要書類チェック：出生証明、住民票、勤務証明のコピー準備</li>
+      <li>☐ 認可外の短期料金・保育時間・キャンセル料を確認（つなぎ用）</li>
+      <li>☐ 勤務先に『就労証明』の早期発行を依頼</li>
+      <li>☐ このレポートをPDF化して、スマホに保存</li>
+    </ul>
+  </section>
+
+  <section class="map card">
+    <h2>地図（イメージ）</h2>
+    <div class="map-viz">
+      <!-- 実地図（外部の地図生成ページへリンク） -->
+      <p>以下リンクから住所ベースの地図（Leaflet）を開き、ボタンで位置を取得してください。</p>
+      <p><a href="nursery_map.html" target="_blank" rel="noopener">🗺 梅田・中央本町エリアの保育園マップを開く</a></p>
+      <p class="caption">※ボタンを押すと、住所を外部（OpenStreetMap Nominatim）に問い合わせしてマーカーを配置します。通信が発生しますので数秒お待ちください。</p>
+    </div>
+  </section>
+
+  <section class="list card">
+    <h2>保育園一覧（おすすめ順）</h2>
+    <p class="muted">※以下は西新井駅周辺の認可・認可外保育園の公開情報をまとめたものです。</p>
+    <div id="nursery-list-dynamic">
+      <!-- nursery_data.js により動的に填充 -->
+      <p>読み込み中...</p>
+    </div>
+    <p class="note">情報は2026年3月時点の公開データ。最新の申込状況は足立区保育課に直接確認ください。</p>
+  </section>
+
+  <section class="ranking card">
+    <h2>おすすめランキング（評価軸）</h2>
+    <p>ランキング出力は保育園一覧セクションに統合しました。以下の評価軸で順位付けされています：</p>
+    <ul>
+      <li><strong>即入所可能性</strong>：0歳の空き枠有無を最優先</li>
+      <li><strong>送迎利便</strong>：駅からの距離・バス・送迎サービス</li>
+      <li><strong>料金</strong>：認可は市基準、認可外は実費を参考</li>
+      <li><strong>保育内容</strong>：アレルギー対応、給食、アクティビティ</li>
+      <li><strong>ユーザー評価</strong>：Google など公開口コミ）</li>
+    </ul>
+  </section>
+
+  <section class="templates card">
+    <h2>📞 すぐ使える連絡テンプレ</h2>
+    
+    <h3>【見学予約の電話文例】</h3>
+    <p class="template-box">「お疲れ様です。×××と申します。0歳の子どもの入園を考えておりまして、見学をさせていただきたいのですが、ご都合のつく日時はありますでしょうか？また、現在0歳児の枠に空きがあるか教えていただけますか？」</p>
+
+    <h3>【認可保育園申込時に聞く質問】</h3>
+    <ul class="qa-list">
+      <li>「現在0歳児クラスの空き枠は何名ですか？」</li>
+      <li>「今年度中に入園可能な時期はいつからですか？」</li>
+      <li>「キャンセル待ちの登録はできますか？」</li>
+      <li>「給食は自園調理ですか？アレルギー対応は？」</li>
+      <li>「延長保育は何時までありますか？別料金ですか？」</li>
+      <li>「保育料の詳細（市基準以外の追加費用）を教えてください」</li>
+    </ul>
+
+    <h3>【勤務先への就労証明依頼】</h3>
+    <p class="template-box">「育休から×月×日の復帰に向けて、保育園の申し込みを進めています。勤務証明書の発行をお願いしたいのですが、可能でしょうか？期限は×月×日までで大丈夫です」</p>
+  </section>
+
+  <section class="strategy card">
+    <h2>📅 実行タイムスケジュール（目安）</h2>
+    <ol>
+      <li><strong>【今週～来週】</strong> 足立区保育課に電話 → 空き状況・期限確認・資料請求</li>
+      <li><strong>【来週中】</strong> 第一～第三希望園を決定 → 各園に見学予約を電話</li>
+      <li><strong>【再来週】</strong> 施設見学開始 → 比較シートを埋める</li>
+      <li><strong>【同時進行】</strong> 認可外の短期枠を2～3園リストアップ → 料金・時間を確認</li>
+      <li><strong>【1ヶ月以内】</strong> 必要書類を集める（住民票・勤務証明等）</li>
+      <li><strong>【期限の1週間前】</strong> 認可申し込み＆認可外の仮予約</li>
+      <li><strong>【その後】</strong> 毎月1～2回、役所に状況確認の電話</li>
+    </ol>
+  </section>
+
+  <section class="extras card">
+    <h2>⚠️ 押さえておきたい注意点</h2>
+    <ul>
+      <li><strong>空き枠は流動的</strong>：認可保育園の空きは年度・月で頻繁に変わります。『今』は空がなくても『来月』空く可能性あり。役所の公開情報が最も確実。</li>
+      <li><strong>認可外は独自ルール多数</strong>：契約書をよく読む、キャンセル料・給食費・おむつ代などの追加費用を細かく聞く。</li>
+      <li><strong>見学時に確認必須事項</strong>：
+        <ul>
+          <li>保育士と子どもの人数比（基準通りか）</li>
+          <li>セキュリティ（出入り管理、防犯カメラ）</li>
+          <li>熱が出たときの対応・迎え時間</li>
+          <li>避難訓練・防災対策</li>
+          <li>0歳児クラスの様子（寝かしつけ、触れ合い時間）</li>
+        </ul>
+      </li>
+      <li><strong>認可外の助成金制度</strong>：東京都や足立区の『認可外保育施設利用助成』で月数千円～数万円の補助がある場合があります。申請期限あり。</li>
+      <li><strong>育休期間を確認</strong>：保育園入園時点での育休の状態によって、保育料が変わる場合あり。</li>
+    </ul>
+  </section>
+
+  <footer class="card small">
+    <p class="muted">📄 <strong>このレポートについて</strong>：公開情報と一般的なアドバイスをまとめたものです。施設の最新情報・空き枠については、必ず足立区保育課または各園に直接確認ください。</p>
+    <p class="muted">🔗 <strong>参考資料</strong>：<a href="childcare_research_guide.txt" download>足立区保育園調査ガイド</a>も併せてご参照。</p>
+  </footer>
+</main>
+<script src="nursery_data.js"></script>
+<script>
+document.getElementById('printBtn').addEventListener('click', ()=>{window.print();});
+</script>
+</body>
+</html>
