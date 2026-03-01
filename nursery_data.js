@@ -1,6 +1,6 @@
 // 梅田・中央本町地域（西新井栄町〜関町）に絞った保育園データ（公式ページを参照）
 const nurseries = [
-  { name: "いづみ", type: "私立", classification: "認可私立", address: "西新井栄町一丁目15番10号", phone: "03-3886-2520", capacity: 30, hours: "7:30～18:30", feeding: "自園調理", ageSlots: "0歳：5名・1歳：10名・2歳：15名", features: ["0歳受け入れ","延長保育"], currentStatus: "要確認", reviews: 4.1, reviewSum: "地域密着の小規模保育園。", cost: "要確認", ranking: 4, pros: ["小規模で目が届く"], cons: ["定員が少ない"], lat: 35.775130, lon: 139.7879781 },
+  { name: "いづみ", type: "私立", classification: "認可私立", address: "西新井栄町一丁目15番10号", phone: "03-3886-2520", capacity: 30, hours: "7:30～18:30", feeding: "自園調理", ageSlots: "0歳：2名・1歳：1名・2歳：0名", features: ["0歳受け入れ","延長保育"], currentStatus: "募集中：0歳2名・1歳1名", reviews: 4.1, reviewSum: "地域密着の小規模保育園。", cost: "要確認", ranking: 4, pros: ["小規模で目が届く"], cons: ["定員が少ない"], lat: 35.775130, lon: 139.7879781 },
 
   { name: "足立ひまわり", type: "私立", classification: "認可私立", address: "西新井栄町一丁目7番8号", phone: "03-3840-6287", capacity: 110, hours: "7:30～19:00", feeding: "自園調理", ageSlots: "0歳：10名・1歳：30名・2歳：70名", features: ["延長保育"], currentStatus: "要確認", reviews: 4.0, reviewSum: "駅近で通勤に便利。", cost: "要確認", ranking: 3, pros: ["駅近で利便性◎"], cons: ["人気で競争率高め"], lat: 35.775130, lon: 139.7879781 },
 
@@ -10,7 +10,7 @@ const nurseries = [
 
   { name: "中部ひまわり", type: "私立", classification: "認可私立", address: "関原二丁目10番4号", phone: "03-5845-5702", capacity: 124, hours: "7:30～19:00", feeding: "自園調理", features: ["大規模クラス"], currentStatus: "要確認", reviews: 4.0, reviewSum: "定員が多く入りやすさがメリット。", cost: "要確認", ranking: 6, pros: ["定員が多く入りやすい"], cons: ["園児数多め"], lat: 35.766350, lon: 139.7889735 },
 
-  { name: "たんぽぽ保育所西新井南園", type: "私立", classification: "認可私立", address: "関原三丁目31番6号", phone: "03-5845-2511", capacity: 70, hours: "7:30～18:30", feeding: "自園調理", features: ["家庭的保育"], currentStatus: "要確認", reviews: 3.9, reviewSum: "家庭的で評判の園。", cost: "要確認", ranking: 1, pros: ["家庭的で安心感あり"], cons: ["定員限りあり"], lat: 35.766350, lon: 139.7889735 },
+  { name: "たんぽぽ保育所西新井南園", type: "私立", classification: "認可私立", address: "関原三丁目31番6号", phone: "03-5845-2511", capacity: 70, hours: "7:30～18:30", feeding: "自園調理", ageSlots: "0歳：0名・1歳：3名・2歳：5名", features: ["家庭的保育"], currentStatus: "募集中：1歳3名・2歳5名", reviews: 3.9, reviewSum: "家庭的で評判の園。", cost: "要確認", ranking: 1, pros: ["家庭的で安心感あり"], cons: ["定員限りあり"], lat: 35.766350, lon: 139.7889735 },
 
   { name: "梅田（区立）", type: "区立", classification: "区立", address: "梅田四丁目2番19号", phone: "03-3848-4775", capacity: 107, hours: "7:30～18:30", feeding: "自園調理", features: ["区立で安定運営"], currentStatus: "要確認", reviews: 4.1, reviewSum: "区立ならではの安定感。", cost: "市基準", ranking: 7, pros: ["運営安定・信頼感あり"], cons: ["申し込み集中の可能性"], lat: 35.767002, lon: 139.7977934 },
 
