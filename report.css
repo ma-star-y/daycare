@@ -27,7 +27,19 @@ h1{font-size:20px;color:#0b3d91}
 .pros strong, .cons strong{display:block;margin-bottom:4px}
 .pros br, .cons br{display:block;content:'';margin:2px 0}
 #nursery-list-dynamic .facility{border:1px solid #e6eef8;padding:10px;margin-bottom:8px;border-radius:6px}
-@media (max-width:600px){body{padding:8px}.container{padding:0}.pros-cons{grid-template-columns:1fr}}
+.top5-grid{display:grid;grid-template-columns:1fr;gap:10px;margin:10px 0}
+.top5-item{background:#f8f9fa;border-left:4px solid #0b3d91;padding:10px;border-radius:4px}
+.top5-item h4{margin:0 0 6px;color:#0b3d91;font-size:13px}
+.top5-item p{margin:4px 0;font-size:12px;line-height:1.5}
+.top5-item strong{color:#0b3d91}
+.area-table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px}
+.area-table thead{background:#0b3d91;color:#fff}
+.area-table th,.area-table td{padding:8px;border:1px solid #e6eef8;text-align:left}
+.area-table tbody tr:nth-child(even){background:#f8f9fa}
+.area-table tbody tr:hover{background:#f0f4ff}
+.area-table strong{color:#0b3d91}
+#comparison-summary{background:#f0f4ff;padding:10px;border-radius:6px;border-left:4px solid #0b3d91;margin:10px 0}
+@media (max-width:600px){body{padding:8px}.container{padding:0}.pros-cons{grid-template-columns:1fr}.top5-grid{grid-template-columns:1fr}.area-table{font-size:11px}.area-table th,.area-table td{padding:6px}}
 @media print{body{background:#fff} .actions{display:none} .card{box-shadow:none;border:1px solid #ddd} header h1{font-size:18px}}
 
 
