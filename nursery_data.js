@@ -1,8 +1,8 @@
 // 梅田・中央本町地域（西新井栄町〜関町）に絞った保育園データ（公式ページを参照）
 const nurseries = [
-  { name: "いづみ", type: "私立", classification: "認可私立", address: "西新井栄町一丁目15番10号", phone: "03-3886-2520", capacity: 30, hours: "7:30～18:30", feeding: "自園調理", features: ["0歳受け入れ","延長保育"], currentStatus: "要確認", reviews: 4.1, reviewSum: "地域密着の小規模保育園。", cost: "要確認", ranking: 4, pros: ["小規模で目が届く"], cons: ["定員が少ない"], lat: 35.775130, lon: 139.7879781 },
+  { name: "いづみ", type: "私立", classification: "認可私立", address: "西新井栄町一丁目15番10号", phone: "03-3886-2520", capacity: 30, hours: "7:30～18:30", feeding: "自園調理", ageSlots: "0歳：5名・1歳：10名・2歳：15名", features: ["0歳受け入れ","延長保育"], currentStatus: "要確認", reviews: 4.1, reviewSum: "地域密着の小規模保育園。", cost: "要確認", ranking: 4, pros: ["小規模で目が届く"], cons: ["定員が少ない"], lat: 35.775130, lon: 139.7879781 },
 
-  { name: "足立ひまわり", type: "私立", classification: "認可私立", address: "西新井栄町一丁目7番8号", phone: "03-3840-6287", capacity: 110, hours: "7:30～19:00", feeding: "自園調理", features: ["延長保育"], currentStatus: "要確認", reviews: 4.0, reviewSum: "駅近で通勤に便利。", cost: "要確認", ranking: 3, pros: ["駅近で利便性◎"], cons: ["人気で競争率高め"], lat: 35.775130, lon: 139.7879781 },
+  { name: "足立ひまわり", type: "私立", classification: "認可私立", address: "西新井栄町一丁目7番8号", phone: "03-3840-6287", capacity: 110, hours: "7:30～19:00", feeding: "自園調理", ageSlots: "0歳：10名・1歳：30名・2歳：70名", features: ["延長保育"], currentStatus: "要確認", reviews: 4.0, reviewSum: "駅近で通勤に便利。", cost: "要確認", ranking: 3, pros: ["駅近で利便性◎"], cons: ["人気で競争率高め"], lat: 35.775130, lon: 139.7879781 },
 
   { name: "西新井きらきら（本園）", type: "私立", classification: "認可私立", address: "西新井栄町一丁目18番14号", phone: "03-5888-9163", capacity: 70, hours: "7:30～19:00", feeding: "自園調理", features: ["分園あり","0歳受け入れ"], currentStatus: "要確認", reviews: 4.2, reviewSum: "分園と連携しているため柔軟。", cost: "要確認", ranking: 5, pros: ["分園での振替対応あり"], cons: ["通園ルールに注意"], lat: 35.775130, lon: 139.7879781 },
 
@@ -46,7 +46,9 @@ function renderNurseryList() {
   const container = document.getElementById('nursery-list-dynamic');
   if (!container) return;
   
-  const html = nurseries.map(n => `
+  // 順位でソート
+  const sorted = nurseries.slice().sort((a,b)=>a.ranking - b.ranking);
+  const html = sorted.map(n => `
       <article class="facility" data-rank="${n.ranking}">
         <h3>🏆 第${n.ranking}位：${n.name}</h3>
         <span class="badge badge-${n.type === '認可' ? 'OK' : 'warning'}">${n.type}${n.classification ? ' / ' + n.classification : ''}</span>
@@ -54,6 +56,7 @@ function renderNurseryList() {
         <p><strong>📞 電話：</strong>${n.phone}</p>
         <p><strong>⏰ 保育時間：</strong>${n.hours}</p>
         <p><strong>🍽 給食：</strong>${n.feeding}</p>
+        ${n.ageSlots ? `<p><strong>👶 年齢別枠：</strong>${n.ageSlots}</p>` : ''}
       <p><strong>✨ 特徴：</strong>${(n.features || []).join('、')}</p>
         <p class="status"><strong>🎯 現在の枠：</strong> ${n.currentStatus}</p>
       <p><strong>⭐ ユーザー評価：</strong> ${'★'.repeat(Math.floor(n.reviews||0))}${'☆'.repeat(5-Math.floor(n.reviews||0))} (${n.reviews || 'N/A'}/5.0)</p>
