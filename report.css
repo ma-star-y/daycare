@@ -39,6 +39,9 @@ h1{font-size:20px;color:#0b3d91}
 .area-table tbody tr:hover{background:#f0f4ff}
 .area-table strong{color:#0b3d91}
 #comparison-summary{background:#f0f4ff;padding:10px;border-radius:6px;border-left:4px solid #0b3d91;margin:10px 0}
+dl{margin:8px 0}
+dt{font-weight:bold;color:#0b3d91;margin-top:6px}
+dd{margin-left:16px;font-size:13px;line-height:1.5}
 @media (max-width:600px){body{padding:8px}.container{padding:0}.pros-cons{grid-template-columns:1fr}.top5-grid{grid-template-columns:1fr}.area-table{font-size:11px}.area-table th,.area-table td{padding:6px}}
 @media print{body{background:#fff} .actions{display:none} .card{box-shadow:none;border:1px solid #ddd} header h1{font-size:18px}}
 
