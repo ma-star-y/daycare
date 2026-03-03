@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir /b \"C:\\\\Users\\\\Moriyama\\\\tetris-game\")",
+      "Bash(powershell -Command \"Get-ChildItem -Path ''C:\\\\Users\\\\Moriyama\\\\tetris-game'' -Name\")"
+    ]
+  }
+}

@@ -1,10 +1,10 @@
-const CACHE_NAME = 'tetris-cache-v1';
+﻿const CACHE_NAME = 'tetris-cache-v1';
 const FILES_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/tetris.js',
-  '/manifest.json'
+  '/games/',
+  '/games/index.html',
+  '/games/style.css',
+  '/games/tetris.js',
+  '/games/manifest.json'
 ];
 
 self.addEventListener('install', (evt) => {
