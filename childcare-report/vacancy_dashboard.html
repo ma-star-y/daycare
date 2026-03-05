@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>入園タイムライン＆空き状況 | 西新井保育園ダッシュボード</title>
+<link rel="stylesheet" href="report.css">
+<style>
+/* ── カウントダウン ── */
+.countdown-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.deadline-box{border-radius:8px;padding:12px;text-align:center;border-top:4px solid #ccc}
+.deadline-box.urgent{border-top-color:#e53e3e;background:#fff5f5}
+.deadline-box.soon{border-top-color:#dd6b20;background:#fffaf0}
+.deadline-box.ok{border-top-color:#2f855a;background:#f0fff4}
+.deadline-box.past{border-top-color:#aaa;background:#f4f6f8;opacity:.6}
+.deadline-month{font-size:12px;font-weight:bold;color:#102a43}
+.deadline-days{font-size:30px;font-weight:bold;line-height:1.1;margin:4px 0}
+.urgent .deadline-days{color:#e53e3e}
+.soon .deadline-days{color:#c05621}
+.ok .deadline-days{color:#2f855a}
+.deadline-date{font-size:11px;color:#627d98;margin-top:2px}
+.flash{font-size:11px;color:#e53e3e;font-weight:bold;margin-top:4px}
+
+/* ── 年齢セレクター ── */
+.age-selector{display:flex;gap:6px;margin:8px 0;flex-wrap:wrap}
+.age-btn{padding:4px 14px;border:2px solid #0b3d91;border-radius:20px;cursor:pointer;
+  font-size:12px;background:#fff;color:#0b3d91;font-family:inherit}
+.age-btn.active{background:#0b3d91;color:#fff}
+
+/* ── 希望園カード ── */
+.nursery-row{display:flex;align-items:center;gap:10px;padding:10px 12px;
+  border-radius:8px;margin-bottom:8px;border:1px solid #e6eef8;background:#fff}
+.nursery-row:hover{background:#f8f9ff}
+.rank-badge{font-size:22px;min-width:30px;text-align:center;flex-shrink:0}
+.nursery-info{flex:1;min-width:0}
+.nursery-name{font-weight:bold;font-size:14px;color:#0b3d91}
+.nursery-sub{font-size:11px;color:#627d98;margin-top:2px}
+.vacancy-col{text-align:right;flex-shrink:0;min-width:130px}
+.slot-label{font-size:15px;font-weight:bold}
+.slot-ok{color:#2f855a}
+.slot-none{color:#c53030}
+.slot-unknown{color:#b7791f}
+.action-hint{font-size:11px;color:#627d98;margin-top:3px}
+
+/* ── アクションリスト ── */
+.action-list{list-style:none;padding:0;margin:0}
+.action-list li{display:flex;align-items:flex-start;gap:8px;padding:9px 10px;
+  border-radius:6px;margin-bottom:6px;font-size:13px;line-height:1.5}
+.act-urgent{background:#fff5f5;border-left:3px solid #e53e3e}
+.act-soon{background:#fffaf0;border-left:3px solid #dd6b20}
+.act-normal{background:#f0fff4;border-left:3px solid #2f855a}
+.act-tag{display:inline-block;font-size:10px;font-weight:bold;padding:2px 7px;
+  border-radius:4px;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.tag-urgent{background:#e53e3e;color:#fff}
+.tag-soon{background:#dd6b20;color:#fff}
+.tag-normal{background:#2f855a;color:#fff}
+
+.section-sub{font-size:12px;color:#627d98;margin:2px 0 10px}
+.update-note{font-size:11px;color:#8a9bae;margin-top:4px}
+
+@media(max-width:600px){
+  .countdown-grid{grid-template-columns:1fr}
+  .nursery-row{flex-wrap:wrap}
+  .vacancy-col{min-width:auto;text-align:left;width:100%}
+}
+</style>
+</head>
+<body>
+<main class="container">
+
+<header>
+  <h1>入園タイムライン＆空き状況</h1>
+  <p class="lead">足立区・西新井エリア ／ <span id="targetAgeDisplay">1</span>歳クラスを目標に活動中</p>
+  <div class="actions">
+    <a href="adachi_nishiarai_childcare_report.html" class="back-link">← 詳細レポート</a>
+  </div>
+  <p class="update-note">空き枠データ最終更新：2026年3月1日（足立区公式PDFより）　毎月更新してください</p>
+</header>
+
+<!-- ① 申し込み締め切りカウントダウン -->
+<section class="card">
+  <h2>📅 次の申し込み締め切り</h2>
+  <p class="section-sub">足立区 認可保育園 入所申し込み（毎月翌月入所分の締め切り）</p>
+  <div class="countdown-grid" id="deadlineGrid"></div>
+  <p class="muted" style="font-size:11px;margin-top:6px">
+    ※締め切り日は必ず足立区保育課に確認してください。
+    <a href="tel:0338805275" style="color:#0b3d91">☎ 03-3880-5275</a>
+  </p>
+</section>
+
+<!-- ② マイ希望園 空き状況 -->
+<section class="card">
+  <h2>🏫 マイ希望園の空き状況</h2>
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+    <span style="font-size:12px">対象年齢クラス：</span>
+    <div class="age-selector" id="ageSelector">
+      <button class="age-btn"         data-age="0" onclick="setAge(0)">0歳</button>
+      <button class="age-btn active"  data-age="1" onclick="setAge(1)">1歳</button>
+      <button class="age-btn"         data-age="2" onclick="setAge(2)">2歳</button>
+      <button class="age-btn"         data-age="3" onclick="setAge(3)">3歳</button>
+    </div>
+  </div>
+  <div id="myNurseryList" style="margin-top:10px"></div>
+</section>
+
+<!-- ③ 今すぐやること -->
+<section class="card">
+  <h2>✅ 今すぐやること</h2>
+  <ul class="action-list" id="actionList"></ul>
+</section>
+
+<!-- ④ 確認方法 -->
+<section class="card">
+  <h2>📋 空き状況の更新方法</h2>
+  <ol style="font-size:13px;padding-left:18px;line-height:2">
+    <li>足立区公式「保育所等の空き状況」ページのPDFを毎月確認する</li>
+    <li><code>check_vacancies.py</code> を実行してPDF更新を自動検知する</li>
+    <li>PDFの数字を見て <code>nursery_data.js</code> の <code>ageSlots</code> を書き換える</li>
+    <li>このページをリロードすると空き状況とアクションリストが自動で更新される</li>
+  </ol>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+    <a href="https://www.city.adachi.tokyo.jp/kodomo-unei/bosyuuninnzuu.html"
+       target="_blank" rel="noopener"
+       style="display:inline-block;background:#0b3d91;color:#fff;padding:7px 14px;
+              border-radius:6px;font-size:12px;text-decoration:none">
+      🔗 足立区 空き状況ページ
+    </a>
+    <a href="adachi_nishiarai_childcare_report.html"
+       style="display:inline-block;border:1px solid #0b3d91;color:#0b3d91;padding:7px 14px;
+              border-radius:6px;font-size:12px;text-decoration:none">
+      📄 詳細レポートを開く
+    </a>
+  </div>
+</section>
+
+</main>
+
+<script src="nursery_data.js"></script>
+<script>
+// ════════════════════════════════════════════
+//  設定：マイ希望園（保育園レビューに基づく）
+// ════════════════════════════════════════════
+const MY_NURSERIES = [
+  {
+    rank: 1, emoji: '🥇',
+    displayName: 'たんぽぽ保育所西新井南園',
+    dataName:    'たんぽぽ保育所西新井南園',
+    reviewTag:   '暫定1位（95点）/ 現実×合理',
+    phone: '03-5845-2511',
+    applyType: 'ninka',
+  },
+  {
+    rank: 2, emoji: '🥈',
+    displayName: 'ちゃいれっく西新井',
+    dataName:    'ちゃいれっく西新井駅前',
+    reviewTag:   '第2希望 / 理想×安心',
+    phone: '03-5888-7916',
+    applyType: 'ninka',
+  },
+  {
+    rank: 3, emoji: '🥉',
+    displayName: 'ミアヘルサ保育園ひびき西新井園',
+    dataName:    'ミアヘルサ保育園ひびき西新井',
+    reviewTag:   '第3希望 / 教育特化',
+    phone: '03-5888-7405',
+    applyType: 'ninka',
+  },
+  {
+    rank: 4, emoji: '④',
+    displayName: 'きらきら保育園',
+    dataName:    '西新井きらきら（本園）',
+    reviewTag:   '第4希望 / 距離特化',
+    phone: '03-5888-9163',
+    applyType: 'ninka',
+  },
+  {
+    rank: 5, emoji: '⑤',
+    displayName: 'スマイルオンパミード',
+    dataName:    null,
+    reviewTag:   '戦略枠 / 企業型 / 2歳まで',
+    phone: '要確認',
+    applyType: 'kigyogata',
+    // 企業型のため手動設定（nursery_data.jsになし）
+    customSlots: { 0: '空きあり（随時）', 1: '空きあり（随時）', 2: '空きあり（随時）',
+                   3: '2歳クラスまで',    4: '2歳クラスまで',    5: '2歳クラスまで' },
+  },
+];
+
+// ════════════════════════════════════════════
+//  足立区 申し込み締め切り日
+//  ※ 毎月区に確認して下記の日付を更新してください
+// ════════════════════════════════════════════
+const DEADLINES = [
+  { label: '5月入園', date: new Date('2026-03-25'), note: '3/25締切（要確認）' },
+  { label: '6月入園', date: new Date('2026-04-25'), note: '4/25締切（要確認）' },
+  { label: '7月入園', date: new Date('2026-05-25'), note: '5/25締切（要確認）' },
+];
+
+// ════════════════════════════════════════════
+//  状態
+// ════════════════════════════════════════════
+let targetAge = 1;
+
+function setAge(age) {
+  targetAge = age;
+  document.querySelectorAll('.age-btn').forEach(b =>
+    b.classList.toggle('active', +b.dataset.age === age));
+  document.getElementById('targetAgeDisplay').textContent = age;
+  renderNurseries();
+  renderActions();
+}
+
+// ════════════════════════════════════════════
+//  ageSlots 文字列をパース
+//  "0歳：0名・1歳：3名・2歳：5名・3歳：0名・4歳：0名・5歳：1名"
+//  → { 0:0, 1:3, 2:5, 3:0, 4:0, 5:1 }
+// ════════════════════════════════════════════
+function parseSlots(str) {
+  if (!str || str === '不明' || str === '要確認') return null;
+  const result = {};
+  for (const m of str.matchAll(/(\d+)歳[：:]\s*(\d+)名/g)) {
+    result[+m[1]] = +m[2];
+  }
+  return Object.keys(result).length ? result : null;
+}
+
+function getCount(myNursery, age) {
+  if (myNursery.customSlots) return myNursery.customSlots[age] ?? null;
+  const data = (typeof nurseries !== 'undefined' ? nurseries : [])
+    .find(n => n.name === myNursery.dataName);
+  if (!data) return null;
+  const slots = parseSlots(data.ageSlots);
+  if (!slots) return null;
+  return slots[age] !== undefined ? slots[age] : null;
+}
+
+function slotInfo(count) {
+  if (count === null || count === undefined)
+    return { html: '<span class="slot-unknown">❓ 要確認</span>', vacant: null };
+  if (typeof count === 'string') {
+    if (count.includes('2歳クラスまで'))
+      return { html: `<span class="slot-none">🚫 ${count}</span>`, vacant: false };
+    return { html: `<span class="slot-ok">✅ ${count}</span>`, vacant: true };
+  }
+  if (count === 0)
+    return { html: '<span class="slot-none">❌ 空きなし（0名）</span>', vacant: false };
+  return { html: `<span class="slot-ok">✅ <strong>${count}名</strong> 空きあり</span>`, vacant: true };
+}
+
+// ════════════════════════════════════════════
+//  カウントダウン描画
+// ════════════════════════════════════════════
+function renderDeadlines() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  document.getElementById('deadlineGrid').innerHTML = DEADLINES.map(d => {
+    const diff = Math.ceil((d.date - today) / 86400000);
+    const cls  = diff < 0 ? 'past' : diff <= 14 ? 'urgent' : diff <= 30 ? 'soon' : 'ok';
+    const daysText = diff < 0 ? '締切済' : diff === 0 ? '今日' : diff + '日';
+    return `<div class="deadline-box ${cls}">
+      <div class="deadline-month">${d.label}</div>
+      <div class="deadline-days">${daysText}</div>
+      <div class="deadline-date">${d.note}</div>
+      ${diff > 0 && diff <= 14 ? '<div class="flash">⚡ 申込を急いで！</div>' : ''}
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════
+//  希望園リスト描画
+// ════════════════════════════════════════════
+function renderNurseries() {
+  document.getElementById('myNurseryList').innerHTML = MY_NURSERIES.map(n => {
+    const count = getCount(n, targetAge);
+    const { html, vacant } = slotInfo(count);
+    const hint =
+      n.applyType === 'kigyogata' ? '企業型：施設へ直接申し込み' :
+      vacant === true             ? '→ 区窓口またはオンラインで申込' :
+      vacant === false            ? '→ キャンセル待ち登録を' :
+                                    '→ まず電話で空き確認を';
+    return `<div class="nursery-row">
+      <div class="rank-badge">${n.emoji}</div>
+      <div class="nursery-info">
+        <div class="nursery-name">${n.displayName}</div>
+        <div class="nursery-sub">${n.reviewTag}</div>
+        <div class="nursery-sub">☎ ${n.phone}</div>
+      </div>
+      <div class="vacancy-col">
+        <div class="slot-label">${html}</div>
+        <div class="action-hint">${hint}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════
+//  アクションリスト（空き状況から自動生成）
+// ════════════════════════════════════════════
+function renderActions() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const next  = DEADLINES.find(d => d.date >= today);
+  const days  = next ? Math.ceil((next.date - today) / 86400000) : 0;
+
+  const acts = [];
+
+  MY_NURSERIES.forEach(n => {
+    const { vacant } = slotInfo(getCount(n, targetAge));
+    if (vacant === true && n.applyType === 'ninka' && next) {
+      acts.push({
+        cls: days <= 14 ? 'urgent' : 'soon',
+        tag: days <= 14 ? `${next.note} ⚡` : next.note,
+        tagCls: days <= 14 ? 'tag-urgent' : 'tag-soon',
+        text: `<strong>${n.displayName}</strong> を${targetAge}歳クラスで申し込む（区の窓口 or オンライン）`,
+      });
+    } else if (vacant === true && n.applyType === 'kigyogata') {
+      acts.push({
+        cls: 'normal', tag: '随時', tagCls: 'tag-normal',
+        text: `<strong>${n.displayName}</strong> に直接連絡して申し込む（企業型・随時受付）`,
+      });
+    } else if (vacant === false) {
+      acts.push({
+        cls: 'normal', tag: '今週中', tagCls: 'tag-normal',
+        text: `<strong>${n.displayName}</strong> にキャンセル待ち登録（☎ ${n.phone}）`,
+      });
+    } else {
+      acts.push({
+        cls: 'normal', tag: '今週中', tagCls: 'tag-normal',
+        text: `<strong>${n.displayName}</strong> に電話して ${targetAge}歳クラスの空きを確認（☎ ${n.phone}）`,
+      });
+    }
+  });
+
+  // 固定アクション
+  acts.push({
+    cls: 'soon', tag: '今週中', tagCls: 'tag-soon',
+    text: '足立区保育課に電話 → <strong>次回締め切り日・必要書類</strong>を確認（☎ 03-3880-5275）',
+  });
+  acts.push({
+    cls: 'normal', tag: '毎月', tagCls: 'tag-normal',
+    text: '<code>python check_vacancies.py</code> を実行して足立区PDFの更新を確認し、nursery_data.js を更新する',
+  });
+
+  const li = acts.map(a =>
+    `<li class="act-${a.cls}">
+      <span class="act-tag ${a.tagCls}">${a.tag}</span>
+      <span>${a.text}</span>
+    </li>`).join('');
+  document.getElementById('actionList').innerHTML = li;
+}
+
+// ── 初期描画 ──
+renderDeadlines();
+renderNurseries();
+renderActions();
+</script>
+</body>
+</html>
