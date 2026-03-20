@@ -24,12 +24,13 @@ run(["git", "status"])
 for f in files:
     run(["git", "add", f])
 
-msg = """Update vacancy data for 2026-03-20
+msg = """Update deadlines and vacancy data (2026-03-20)
 
+- 申込締め切り日程を足立区公式PDF（r8-annai.pdf）に基づき全月更新
+  5月:4/10, 6月:5/10, 7月:6/10, 8月:7/10, 9月:8/10, 10月:9/10, 11月:10/10, 12月:11/10, 1月:12/3
+- カウントダウン表示を「直近3件＋直前1件」に自動絞り込む仕様に変更
 - ちゃいれっく西新井駅前: 全クラス満員に更新（公式サイト2026/2/1確認）
-- 空き枠データ更新日を2026年3月20日に更新
-- parse_vacancy_pdf.py: 足立区PDFから空き枠を自動抽出するスクリプトを追加
-- run_parse_vacancy.bat: PDF解析スクリプトの起動バッチを追加
+- parse_vacancy_pdf.py, run_parse_vacancy.bat: PDF空き枠抽出ヘルパーを追加
 
 Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"""
 

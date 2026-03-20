@@ -191,9 +191,15 @@ const MY_NURSERIES = [
 //  ※ 毎月区に確認して下記の日付を更新してください
 // ════════════════════════════════════════════
 const DEADLINES = [
-  { label: '5月入園', date: new Date('2026-03-25'), note: '3/25締切（要確認）' },
-  { label: '6月入園', date: new Date('2026-04-25'), note: '4/25締切（要確認）' },
-  { label: '7月入園', date: new Date('2026-05-25'), note: '5/25締切（要確認）' },
+  { label: '5月入所', date: new Date('2026-04-10'), note: '3/18〜4/10締切' },
+  { label: '6月入所', date: new Date('2026-05-10'), note: '4/11〜5/10締切' },
+  { label: '7月入所', date: new Date('2026-06-10'), note: '5/11〜6/10締切' },
+  { label: '8月入所', date: new Date('2026-07-10'), note: '6/11〜7/10締切' },
+  { label: '9月入所', date: new Date('2026-08-10'), note: '7/11〜8/10締切' },
+  { label: '10月入所', date: new Date('2026-09-10'), note: '8/11〜9/10締切' },
+  { label: '11月入所', date: new Date('2026-10-10'), note: '9/11〜10/10締切' },
+  { label: '12月入所', date: new Date('2026-11-10'), note: '10/11〜11/10締切' },
+  { label: '令和9年1月入所', date: new Date('2026-12-03'), note: '11/11〜12/3締切' },
 ];
 
 // ════════════════════════════════════════════
@@ -252,15 +258,21 @@ function slotInfo(count) {
 // ════════════════════════════════════════════
 function renderDeadlines() {
   const today = new Date(); today.setHours(0,0,0,0);
-  document.getElementById('deadlineGrid').innerHTML = DEADLINES.map(d => {
-    const diff = Math.ceil((d.date - today) / 86400000);
-    const cls  = diff < 0 ? 'past' : diff <= 14 ? 'urgent' : diff <= 30 ? 'soon' : 'ok';
-    const daysText = diff < 0 ? '締切済' : diff === 0 ? '今日' : diff + '日';
+  // 過去は直近1件のみ残し、未来は3件まで表示
+  const withDiff = DEADLINES.map(d => ({
+    ...d, diff: Math.ceil((d.date - today) / 86400000)
+  }));
+  const past   = withDiff.filter(d => d.diff < 0).slice(-1);
+  const future = withDiff.filter(d => d.diff >= 0).slice(0, 3);
+  const shown  = [...past, ...future];
+  document.getElementById('deadlineGrid').innerHTML = shown.map(d => {
+    const cls  = d.diff < 0 ? 'past' : d.diff <= 14 ? 'urgent' : d.diff <= 30 ? 'soon' : 'ok';
+    const daysText = d.diff < 0 ? '締切済' : d.diff === 0 ? '今日' : d.diff + '日';
     return `<div class="deadline-box ${cls}">
       <div class="deadline-month">${d.label}</div>
       <div class="deadline-days">${daysText}</div>
       <div class="deadline-date">${d.note}</div>
-      ${diff > 0 && diff <= 14 ? '<div class="flash">⚡ 申込を急いで！</div>' : ''}
+      ${d.diff > 0 && d.diff <= 14 ? '<div class="flash">⚡ 申込を急いで！</div>' : ''}
     </div>`;
   }).join('');
 }
