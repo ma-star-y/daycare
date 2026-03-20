@@ -43,6 +43,69 @@ dl{margin:8px 0}
 dt{font-weight:bold;color:#0b3d91;margin-top:6px}
 dd{margin-left:16px;font-size:13px;line-height:1.5}
 @media (max-width:600px){body{padding:8px}.container{padding:0}.pros-cons{grid-template-columns:1fr}.top5-grid{grid-template-columns:1fr}.area-table{font-size:11px}.area-table th,.area-table td{padding:6px}}
-@media print{body{background:#fff} .actions{display:none} .card{box-shadow:none;border:1px solid #ddd} header h1{font-size:18px}}
+@media print{body{background:#fff} .actions{display:none} .card{box-shadow:none;border:1px solid #ddd} header h1{font-size:18px} .toc-nav,.toc-topbar{display:none!important}}
+
+/* ── 左ペインナビ（デスクトップ） ── */
+.toc-nav{position:fixed;left:0;top:50%;transform:translateY(-50%);width:170px;background:#fff;
+  border-radius:0 10px 10px 0;box-shadow:0 2px 12px rgba(16,42,67,.13);padding:10px 0;
+  z-index:200;max-height:88vh;overflow-y:auto}
+.toc-nav-title{font-size:10px;font-weight:bold;color:#8a9bae;text-transform:uppercase;
+  letter-spacing:.5px;padding:4px 12px 2px;margin:0}
+.toc-nav a{display:block;padding:5px 12px 5px 14px;font-size:11.5px;color:#334e68;
+  text-decoration:none;border-left:3px solid transparent;line-height:1.4;transition:all .15s}
+.toc-nav a:hover{background:#f0f4ff;color:#0b3d91;border-left-color:#b0c4e8}
+.toc-nav a.toc-active{background:#f0f4ff;color:#0b3d91;border-left-color:#0b3d91;font-weight:bold}
+.toc-nav-sep{height:1px;background:#e6eef8;margin:6px 10px}
+
+/* ── 吸着トップバー（タブレット・スマホ） ── */
+.toc-topbar{display:none;position:sticky;top:0;background:#0b3d91;z-index:200;
+  padding:5px 8px;overflow-x:auto;white-space:nowrap;
+  margin:-12px -12px 12px;scrollbar-width:none}
+.toc-topbar::-webkit-scrollbar{display:none}
+.toc-topbar a{display:inline-block;color:rgba(255,255,255,.82);font-size:11px;
+  text-decoration:none;padding:3px 8px;border-radius:3px;margin-right:2px;transition:all .15s}
+.toc-topbar a:hover,.toc-topbar a.toc-active{background:rgba(255,255,255,.22);color:#fff}
+
+/* ── 保育園一覧 フィルタ・ソートバー ── */
+.list-controls{background:#f0f4ff;border-radius:8px;padding:10px 12px;margin-bottom:12px;
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ctrl-group{display:flex;align-items:center;gap:4px}
+.ctrl-group label{font-size:12px;font-weight:bold;color:#0b3d91;white-space:nowrap}
+.ctrl-group select,.ctrl-group input[type=search]{
+  padding:4px 8px;border:1px solid #b0c4e8;border-radius:4px;
+  font-size:12px;font-family:inherit;background:#fff;color:#102a43;min-width:80px}
+.ctrl-group input[type=search]{min-width:130px}
+.result-count{font-size:11px;color:#627d98;margin-left:auto;white-space:nowrap}
+.score-pill{display:inline-block;background:#e8f0fe;color:#1a56db;font-size:10px;
+  font-weight:bold;padding:2px 7px;border-radius:10px;margin-left:4px}
+.feature-tag{display:inline-block;background:#e8f0fe;color:#1a56db;font-size:10px;
+  padding:1px 6px;border-radius:3px;margin:1px 2px 1px 0}
+.type-badge{display:inline-block;color:#fff;font-size:10px;font-weight:bold;
+  padding:2px 7px;border-radius:3px;margin-right:4px}
+.warn-box{background:#fff5f5;border:1px solid #e53e3e;border-radius:4px;
+  padding:6px 8px;margin:6px 0;font-size:12px;color:#c53030}
+.ref-links{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.ref-btn{font-size:11px;text-decoration:none;padding:3px 10px;border-radius:4px;
+  border:1px solid;white-space:nowrap}
+.ref-btn-detail{color:#0b3d91;border-color:#b0c4e8}
+.ref-btn-detail:hover{background:#f0f4ff}
+.ref-btn-tel{color:#2f855a;border-color:#9ae6b4}
+.ref-btn-tel:hover{background:#f0fff4}
+@media(max-width:600px){.list-controls{gap:6px}.result-count{margin-left:0}}
+
+/* ── 企業型保育園セクション ── */
+.kigyogata-card{border:1px solid #e0eaff;padding:10px;margin-bottom:10px;border-radius:8px;
+  background:#fafcff}
+.kigyogata-card h3{margin:4px 0 6px;color:#0b3d91;font-size:14px}
+.badge-kigyou{background:#6c63ff;color:#fff}
+.badge-ninkaigai{background:#e9762b;color:#fff}
+
+@media(max-width:980px){
+  .toc-nav{display:none}
+  .toc-topbar{display:block}
+}
+@media(max-width:600px){
+  .toc-topbar{margin:-8px -8px 10px}
+}
 
 

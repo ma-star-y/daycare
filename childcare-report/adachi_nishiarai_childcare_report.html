@@ -7,7 +7,40 @@
 <link rel="stylesheet" href="report.css">
 </head>
 <body>
+
+<!-- 左ペインナビ（デスクトップ 980px以上） -->
+<nav class="toc-nav" id="tocNav">
+  <p class="toc-nav-title">目次</p>
+  <a href="#s-summary">📌 調査概要</a>
+  <a href="#s-howto">🎯 入園HOW-TO</a>
+  <a href="#s-checklist">✅ チェックリスト</a>
+  <a href="#s-map">🗺 地図</a>
+  <a href="#s-list">🏫 保育園一覧</a>
+  <a href="#s-ranking">🏆 評価軸</a>
+  <div class="toc-nav-sep"></div>
+  <a href="#s-kigyou">🏢 企業型保育園</a>
+  <a href="#s-templates">📞 連絡テンプレ</a>
+  <a href="#s-memo">🔍 調査メモ</a>
+  <a href="#s-strategy">📅 スケジュール</a>
+  <a href="#s-extras">⚠️ 注意点</a>
+</nav>
+
 <main class="container">
+
+<!-- 吸着トップバー（タブレット・スマホ） -->
+<nav class="toc-topbar" id="tocTopbar">
+  <a href="#s-summary">📌概要</a>
+  <a href="#s-howto">🎯HOW-TO</a>
+  <a href="#s-checklist">✅チェック</a>
+  <a href="#s-map">🗺地図</a>
+  <a href="#s-list">🏫一覧</a>
+  <a href="#s-ranking">🏆評価軸</a>
+  <a href="#s-kigyou">🏢企業型</a>
+  <a href="#s-templates">📞テンプレ</a>
+  <a href="#s-memo">🔍メモ</a>
+  <a href="#s-strategy">📅スケジュール</a>
+  <a href="#s-extras">⚠️注意点</a>
+</nav>
   <header>
     <h1>足立区・西新井駅周辺<br>保育園まとめレポート</h1>
     <!-- ここに Gemini 生成イメージを挿入 -->
@@ -25,17 +58,17 @@
     </div>
   </header>
 
-  <section class="summary card">
+  <section class="summary card" id="s-summary">
     <h2>📌 調査概要</h2>
     <ul>
       <li><strong>対象範囲</strong>：西新井駅から徒歩15分圏内</li>
       <li><strong>対象施設</strong>：認可保育園、認証保育所、認可外保育園、企業内保育など全種</li>
       <li><strong>調査項目</strong>：基本情報（住所・電話・定員）、申込状況、空き枠、保育方針、料金、ユーザー評価</li>
-      <li><strong>情報時点</strong>：2026年3月1日（公開情報ベース）</li>
+      <li><strong>情報時点</strong>：2026年3月8日（空き枠は3月1日付・口コミ/評判は2026年3月最新情報に更新）</li>
     </ul>
   </section>
 
-  <section class="howto card">
+  <section class="howto card" id="s-howto">
     <h2>🎯 今から0歳児を入れるためのHOW‑TO（実戦戦略）</h2>
     <ol>
       <li><strong>【第1歩】役所に電話・窓口確認</strong><br>
@@ -55,7 +88,7 @@
     </ol>
   </section>
 
-  <section class="checklist card">
+  <section class="checklist card" id="s-checklist">
     <h2>✅ やることチェックリスト（すぐ実行可能）</h2>
     <ul>
       <li>☐ 足立区保育課に電話 → 電話番号をメモして最新情報確認</li>
@@ -68,7 +101,7 @@
     </ul>
   </section>
 
-  <section class="map card">
+  <section class="map card" id="s-map">
     <h2>地図（イメージ）</h2>
     <div class="map-viz">
       <!-- 実地図（外部の地図生成ページへリンク） -->
@@ -78,17 +111,54 @@
     </div>
   </section>
 
-  <section class="list card">
+  <section class="list card" id="s-list">
     <h2>保育園一覧（おすすめ順）</h2>
-    <p class="muted">※以下は西新井駅周辺の認可・認可外保育園の公開情報をまとめたものです。</p>
-    <div id="nursery-list-dynamic">
-      <!-- nursery_data.js により動的に填充 -->
-      <p>読み込み中...</p>
+    <p class="muted">総合スコア順（ユーザー評価45%・駅距離25%・施設の新しさ15%・保育時間10%・特徴数5%）。並び替え・絞り込みで自分の条件に最適な順に変更できます。</p>
+
+    <!-- フィルタ・並び替えバー -->
+    <div class="list-controls">
+      <div class="ctrl-group">
+        <label for="sortKey">並び替え：</label>
+        <select id="sortKey">
+          <option value="score">🏆 総合スコア</option>
+          <option value="reviews">⭐ ユーザー評価</option>
+          <option value="distance">📍 駅からの距離</option>
+          <option value="newness">🏗️ 施設の新しさ</option>
+          <option value="hours">⏰ 保育時間（長順）</option>
+          <option value="features">✨ 特徴数</option>
+        </select>
+      </div>
+      <div class="ctrl-group">
+        <label for="filterType">種別：</label>
+        <select id="filterType">
+          <option value="">全て</option>
+          <option value="ninka">認可・公設民営・区立</option>
+          <option value="kigyou">企業型・認可外</option>
+        </select>
+      </div>
+      <div class="ctrl-group">
+        <label for="filterAge">空き年齢：</label>
+        <select id="filterAge">
+          <option value="">全て</option>
+          <option value="0">0歳</option>
+          <option value="1">1歳</option>
+          <option value="2">2歳</option>
+          <option value="3">3歳</option>
+          <option value="4">4歳</option>
+          <option value="5">5歳</option>
+        </select>
+      </div>
+      <div class="ctrl-group">
+        <input type="search" id="searchInput" placeholder="🔍 園名検索...">
+      </div>
+      <span class="result-count" id="resultCount"></span>
     </div>
-    <p class="note">情報は2026年3月時点の公開データ。最新の申込状況は足立区保育課に直接確認ください。</p>
+
+    <div id="nursery-list-dynamic"><p class="muted">読み込み中...</p></div>
+    <p class="note" style="font-size:11px;color:#8a9bae;margin-top:8px">情報は2026年3月時点の公開データ。最新の申込状況は足立区保育課に直接確認ください。</p>
   </section>
 
-  <section class="ranking card">
+  <section class="ranking card" id="s-ranking">
     <h2>おすすめランキング（評価軸）</h2>
     <p>ランキング出力は保育園一覧セクションに統合しました。以下の評価軸で順位付けされています：</p>
     <ul>
@@ -100,7 +170,62 @@
     </ul>
   </section>
 
-  <section class="templates card">
+  <section class="card" id="s-kigyou">
+    <h2>🏢 企業主導型・認可外保育園（西新井エリア）</h2>
+    <p class="muted">認可に入れなかった場合の「つなぎ」や戦略的な第一選択として重要。随時入所可能な場合が多い。</p>
+
+    <div class="kigyogata-card">
+      <h3>こころとうたう保育園</h3>
+      <span class="badge badge-kigyou">企業主導型</span>
+      <p class="meta"><strong>住所：</strong>西新井本町5丁目7番14号 E.M.Sビル1F　｜　<strong>電話：</strong>03-6806-4810</p>
+      <p class="meta"><strong>運営：</strong>株式会社エデュリー　｜　<strong>アクセス：</strong>西新井駅 徒歩10分</p>
+      <p><strong>定員：</strong>12名（0歳3名・1〜2歳6名・3歳2名・4〜5歳1名）</p>
+      <p><strong>保育時間：</strong>7:00〜20:00　休園：日曜・祝日・年末年始</p>
+      <p><strong>給食：</strong>全て自園調理</p>
+      <p><strong>特徴：</strong>「ほめる」より「気づく」保育で主体性を育む。<strong>稲作体験など本物体験</strong>を通じた好奇心育成。クリエイティブタイムで創造性発揮。デジタル連絡帳アプリ対応。<strong>医療従事者向け夜間・休日保育</strong>あり（要相談）。午睡チェックは5〜10分おき。小規模12名ならではの超手厚い個別対応が最大の強み。</p>
+      <p><strong>保育方針：</strong>子どものモノサシを大切に、長所を伸ばす。「嬉しい時はうたをうたう。みんなでうたえばもっとしあわせ」をコンセプトに感受性・思いやりを育む。</p>
+      <div class="pros-cons">
+        <div class="pros"><strong>✅ おすすめポイント</strong><br>定員12名の超小規模で一人ひとりに手厚い<br>稲作・本物体験重視の独自保育<br>自園調理・アプリ連絡帳完備<br>医療従事者の夜間対応あり（要確認）<br>認可に入れなかった際の有力つなぎ先</div>
+        <div class="cons"><strong>⚠️ 注意点</strong><br>定員12名のため一度埋まると入りにくい<br>企業主導型のため料金は認可より高め<br>日曜・祝日は休園<br>口コミ情報がまだ少ない</div>
+      </div>
+      <p class="meta" style="margin-top:6px">🔗 <a href="https://edulead.jp/hoikuen/kokorotoutau/" target="_blank" rel="noopener">公式サイト（エデュリー）</a></p>
+    </div>
+
+    <div class="kigyogata-card">
+      <h3>すまいる・オンパミード 西新井駅前保育園</h3>
+      <span class="badge badge-ninkaigai">認可外（企業主導型に準ずる）</span>
+      <p class="meta"><strong>住所：</strong>西新井栄町2丁目3番3号 さくら参道ビル5F　｜　<strong>電話：</strong>03-6806-3548</p>
+      <p class="meta"><strong>開園：</strong>2017年5月　｜　<strong>アクセス：</strong>西新井駅 徒歩2〜3分</p>
+      <p><strong>定員：</strong>30名　｜　<strong>対象年齢：</strong>0〜2歳（3歳以降は転園が必要）</p>
+      <p><strong>特徴：</strong>「生きる強さ・創造性を育む・基本的な生活習慣を身に付ける」が基本理念。<strong>ECC幼児教育による英会話レッスン</strong>実施。<strong>らでぃっしゅぼーや（有機・低農薬野菜）</strong>による安全な給食。在園児は室内遊具施設「オンパミード」の無料利用券あり。デジタル連絡帳あり。</p>
+      <p><strong>注意点：</strong>2歳クラスまでしか受け入れないため、3歳の壁（認可への転園）が必須。認可に入るまでの「つなぎ」として戦略的に活用するのが鉄板。</p>
+      <div class="pros-cons">
+        <div class="pros"><strong>✅ おすすめポイント</strong><br>西新井駅から徒歩2〜3分の超駅近<br>ECC英会話レッスンが標準で付く<br>有機野菜給食で安全安心<br>定員30名で比較的入りやすい（随時募集）<br>認可落選時のつなぎとして最優先候補</div>
+        <div class="cons"><strong>⚠️ 注意点</strong><br>0〜2歳のみ。3歳で認可への転園が必須<br>認可外のため保育料は認可より高め<br>園庭なし（屋外活動は近隣公園利用）<br>2歳以降の継続利用不可</div>
+      </div>
+      <p class="meta" style="margin-top:6px">🔗 <a href="https://smile-onpamido.com/preschool/nishiarai/" target="_blank" rel="noopener">公式サイト（すまいるオンパミード）</a></p>
+    </div>
+
+    <div class="kigyogata-card">
+      <h3>すまいる・オンパミード 大師駅前保育園</h3>
+      <span class="badge badge-ninkaigai">認可外（企業主導型に準ずる）</span>
+      <p class="meta"><strong>住所：</strong>西新井1丁目1番11号 ソラーナ清水2F　｜　<strong>開園：</strong>2018年4月</p>
+      <p class="meta"><strong>アクセス：</strong>西新井大師前駅 徒歩すぐ</p>
+      <p><strong>定員：</strong>30名　｜　<strong>対象年齢：</strong>生後6ヶ月〜5歳</p>
+      <p><strong>特徴：</strong>西新井駅前園と同グループ。<strong>0〜5歳まで継続通園可</strong>（西新井駅前園との最大の違い）。英会話（ECC）・有機野菜給食・リトミック・体操あり。</p>
+      <div class="pros-cons">
+        <div class="pros"><strong>✅ おすすめポイント</strong><br>5歳まで継続通園できる（転園不要）<br>英語・体操・リトミック充実<br>西新井大師前駅すぐの好立地<br>同グループ兄弟姉妹割引の可能性あり</div>
+        <div class="cons"><strong>⚠️ 注意点</strong><br>認可外のため保育料は高め<br>西新井駅からは距離あり（西新井大師前駅利用推奨）</div>
+      </div>
+    </div>
+
+    <p class="muted" style="margin-top:8px;font-size:12px">
+      ※足立区が公開している「企業主導型保育施設一覧」も参照：
+      <a href="https://www.city.adachi.tokyo.jp/documents/54283/080115_kigyou-itirann.pdf" target="_blank" rel="noopener">足立区 企業主導型保育施設一覧PDF</a>
+    </p>
+  </section>
+
+  <section class="templates card" id="s-templates">
     <h2>📞 すぐ使える連絡テンプレ</h2>
     
     <h3>【見学予約の電話文例】</h3>
@@ -120,38 +245,38 @@
     <p class="template-box">「育休から×月×日の復帰に向けて、保育園の申し込みを進めています。勤務証明書の発行をお願いしたいのですが、可能でしょうか？期限は×月×日までで大丈夫です」</p>
   </section>
 
-  <section class="memo card">
+  <section class="memo card" id="s-memo">
     <h2>🔍 西新井調査メモ</h2>
     <p>以下は現地見学した5園＋追加コメントをもとにしたメモ。分類は「認可」「認可外」「企業型」「区立」「公設民営」などを併記。</p>
 
     <h3>🚩 個別レビュー要約</h3>
     <dl>
-      <dt>たんぽぽ保育所西新井南園（認可私立）</dt>
-      <dd>バランス良・看護師常駐・体育・英語毎週・手ぶら登園可。距離4分。暫定1位（95点評価）。</dd>
+      <dt>たんぽぽ保育所西新井南園（認可私立）★4.3</dt>
+      <dd>2020年4月開園の新しい認可保育園。<strong>農園体験が充実</strong>（園バスで農園へ・種まきから収穫まで）、ウッドデッキ付き園庭あり。スマホアプリで連絡帳対応で保護者負担少。<strong>先生の子どもも通うほど職場環境が良好</strong>と評判。「ありがとう・ごめんなさい・いっしょにね」を言える子を育てる保育方針。西新井エリア総合1位推奨。</dd>
 
-      <dt>ちゃいれっく西新井駅前（認可私立）</dt>
-      <dd>安心感抜群。給食調理室公開、屋上広い、看護師常駐。駅前・朝7:00～20:00。優等生的な第一希望候補。</dd>
+      <dt>ちゃいれっく西新井駅前（認可私立）★4.2</dt>
+      <dd>2020年4月開園。<strong>西新井駅西口から徒歩約1分</strong>の超駅近。新築園舎で清潔感が高く、<strong>広い屋上テラス</strong>で外遊び充実。食育（季節の野菜栽培・食事提供）に力を入れており、子どもの五感を育てる。朝7:00〜20:00対応でフルタイム共働きに最適。</dd>
 
-      <dt>きらきら保育園（認可私立）</dt>
-      <dd>徒歩1～3分。アプリ連絡帳・おむつサブスクあり。特別な感動はないが堅実。Bプラン的。</dd>
+      <dt>西新井きらきら（認可私立）★4.3</dt>
+      <dd>西新井駅から徒歩5分圏内の駅近。<strong>英語・体操・臨床美術の3本柱</strong>でバランス良く教育。少人数クラスで先生が一人ひとりをよく見てくれると保護者から高評価。先生と保護者の距離が近く気軽に相談できる雰囲気。分園との連携で柔軟な対応も可能。</dd>
 
-      <dt>ミアヘルサ保育園ひびき西新井園（認可私立）</dt>
-      <dd>先生の雰囲気良好。広い敷地、階段なし、劇団四季など体験型。徒歩15分で距離が課題。</dd>
+      <dt>ミアヘルサ保育園ひびき西新井（認可私立）★4.2</dt>
+      <dd>独自プログラム<strong>「ミッケルアート」</strong>（民営保育園への導入は当園が初・2019年）でアートを通して自ら考える力と自己肯定感を育む。縦割り保育・見守る保育を実践。少人数で先生同士の雰囲気が良いと職員口コミでも高評価。ミアヘルサグループの安定した組織運営が強み。<em>西新井駅から徒歩15分が課題（梅島駅利用が便利）。</em></dd>
 
       <dt>スマイルオンパミード（企業型認可外）</dt>
-      <dd>近さと空きが魅力。2歳まで。紙連絡帳・園庭なし。保険的戦略園。</dd>
+      <dd>近さと空きが魅力。2歳まで。紙連絡帳・園庭なし。認可入所までの保険的戦略園として有効。</dd>
 
-      <dt>いづみ（認可私立）</dt>
-      <dd>元1位だったが「職員一斉退職」ニュースで信頼度低下。順位を下げるべき。</dd>
+      <dt>いづみ（認可私立）★3.2 ⚠️要注意</dt>
+      <dd><strong>2022年3月末、保育士ほぼ全員が退職し運営を一時停止</strong>（園児53名全員が他園に転園）。業務過多・園長との不和が原因と足立区の調査で報告、東京新聞が報道（2022年4月）。その後体制を再建し現在は運営継続中だが、<strong>見学・面談で運営体制・職員定着率を必ず確認することを強く推奨</strong>。駅近の立地は魅力だが、慎重な判断を。</dd>
     </dl>
 
-    <h3>📋 独自ランキング（見学ベース）</h3>
+    <h3>📋 独自ランキング（見学ベース・2026年3月更新）</h3>
     <ol>
-      <li>たんぽぽ保育所西新井南園（認可私立）</li>
-      <li>ちゃいれっく西新井駅前（認可私立）</li>
-      <li>足立ひまわり（認可私立）</li>
-      <li>いづみ（認可私立）※職員大量退職で注意</li>
-      <li>西新井きらきら（認可私立）</li>
+      <li>たんぽぽ保育所西新井南園（認可私立）★4.3 ― 農園・新施設・アプリ・職場環境◎</li>
+      <li>ちゃいれっく西新井駅前（認可私立）★4.2 ― 超駅近・新築・屋上・食育</li>
+      <li>足立ひまわり（認可私立）― 駅近・定員多め</li>
+      <li>いづみ（認可私立）★3.2 ⚠️ ― 2022年保育士ほぼ全員退職・運営停止の経緯あり。体制要確認</li>
+      <li>西新井きらきら（認可私立）★4.3 ― 英語・体操・臨床美術・少人数</li>
       <li>中部ひまわり（認可私立）</li>
       <li>梅田（区立）</li>
       <li>親隣館（認可私立）</li>
@@ -183,7 +308,7 @@
         <tr>
           <td><strong>西新井栄町</strong></td>
           <td>駅至近。小～中規模混在。0歳受け入れ多数。</td>
-          <td>いづみ(4位)・足立ひまわり(3位)・西新井きらきら(5位)</td>
+          <td>足立ひまわり(3位)・西新井きらきら(5位)・いづみ(4位)⚠️</td>
           <td>高い ⚠️</td>
         </tr>
         <tr>
@@ -225,17 +350,16 @@
       </li>
       <li><strong>【通勤利便性重視】</strong>
         <ul>
-          <li>第一希望：ちゃいれっく西新井駅前</li>
-          <li>第二希望：いづみ（ただし職員退職ニュース有り）</li>
-          <li>第三希望：きらきら保育園</li>
+          <li>第一希望：ちゃいれっく西新井駅前（駅徒歩1分・朝7:00〜20:00）</li>
+          <li>第二希望：西新井きらきら（駅徒歩5分・英語体操臨床美術）</li>
+          <li>第三希望：足立ひまわり（駅徒歩5分・定員多め）</li>
+          <li>※いづみは2022年の保育士集団退職問題があるため、見学で現体制を必ず確認してから判断</li>
         </ul>
       </li>
     </ul>
 
   </section>
-  <section class="strategy card">
-    <h2>📅 実行タイムスケジュール（目安）</h2>
-  <section class="strategy card">
+  <section class="strategy card" id="s-strategy">
     <h2>📅 実行タイムスケジュール（目安）</h2>
     <ol>
       <li><strong>【今週～来週】</strong> 足立区保育課に電話 → 空き状況・期限確認・資料請求</li>
@@ -248,7 +372,7 @@
     </ol>
   </section>
 
-  <section class="extras card">
+  <section class="extras card" id="s-extras">
     <h2>⚠️ 押さえておきたい注意点</h2>
     <ul>
       <li><strong>空き枠は流動的</strong>：認可保育園の空きは年度・月で頻繁に変わります。『今』は空がなくても『来月』空く可能性あり。役所の公開情報が最も確実。</li>
@@ -268,13 +392,222 @@
   </section>
 
   <footer class="card small">
-    <p class="muted">📄 <strong>このレポートについて</strong>：公開情報と一般的なアドバイスをまとめたものです。施設の最新情報・空き枠については、必ず足立区保育課または各園に直接確認ください。</p>
+    <p class="muted">📄 <strong>このレポートについて</strong>：公開情報・各保育園口コミサイト・東京新聞報道をもとにまとめたものです。施設の最新情報・空き枠については、必ず足立区保育課または各園に直接確認ください。</p>
     <p class="muted">🔗 <strong>参考資料</strong>：<a href="childcare_research_guide.txt" download>足立区保育園調査ガイド</a>も併せてご参照。</p>
+    <p class="muted">📰 <strong>参考報道</strong>：<a href="https://www.tokyo-np.co.jp/article/172961" target="_blank" rel="noopener">東京新聞「保育士ほぼ全員退職 足立の保育所 園児受け入れ停止」</a>（いづみ保育園に関する報道）</p>
   </footer>
 </main>
 <script src="nursery_data.js"></script>
 <script>
+// ════════════════════════════════════════
+//  印刷ボタン
+// ════════════════════════════════════════
 document.getElementById('printBtn').addEventListener('click', ()=>{window.print();});
+
+// ════════════════════════════════════════
+//  ユーティリティ
+// ════════════════════════════════════════
+function fmtHour(h) {
+  const hh = Math.floor(h);
+  const mm = Math.round((h - hh) * 60);
+  return `${hh}:${String(mm).padStart(2,'0')}`;
+}
+
+function computeScore(n) {
+  const r = (n.reviews  || 0) / 5 * 45;
+  const d = Math.max(0, (20 - (n.distanceMin  || 20)) / 20) * 25;
+  const y = Math.max(0, ((n.established || 1990) - 1990) / 34) * 15;
+  const h = ((n.closeHour || 18.5) - (n.openHour || 7.5)) / 13 * 10;
+  const f = Math.min((n.features || []).length, 5) / 5 * 5;
+  return Math.round((r + d + y + h + f) * 10) / 10;
+}
+
+// ageSlots "0歳：0名・1歳：3名..." → {0:0, 1:3, ...}
+function parseSlots(str) {
+  if (!str || str === '不明' || str === '要確認') return null;
+  const result = {};
+  for (const m of str.matchAll(/(\d+)歳[：:]\s*(\d+)名/g))
+    result[+m[1]] = +m[2];
+  return Object.keys(result).length ? result : null;
+}
+
+// 種別バッジの色
+const typeColor = {
+  '区立':       '#2563eb',
+  '公設民営':   '#0891b2',
+  '認可私立':   '#7c3aed',
+  '企業主導型': '#6c63ff',
+  '認可外保育園': '#e9762b',
+};
+
+const medals = ['🥇','🥈','🥉'];
+
+// ════════════════════════════════════════
+//  1枚のカードを生成
+// ════════════════════════════════════════
+function buildCard(n, displayRank, activeSortKey) {
+  const score = computeScore(n);
+  const medal = displayRank <= 3
+    ? `<span style="font-size:22px;line-height:1">${medals[displayRank-1]}</span>`
+    : `<span style="font-size:15px;font-weight:bold;color:#627d98">${displayRank}位</span>`;
+
+  const cls   = typeColor[n.classification] || '#627d98';
+  const stars = '★'.repeat(Math.floor(n.reviews||0)) + '☆'.repeat(5-Math.floor(n.reviews||0));
+  const hoursStr = (n.openHour != null && n.closeHour != null)
+    ? `${fmtHour(n.openHour)}〜${fmtHour(n.closeHour)}`
+    : (n.hours || '要確認');
+
+  // 並び替えキーをハイライト
+  const hl = (label, key) => activeSortKey === key
+    ? `<strong style="color:#0b3d91;background:#dbeafe;padding:0 2px;border-radius:2px">${label}</strong>`
+    : label;
+
+  const featureTags = (n.features||[]).map(f =>
+    `<span class="feature-tag">${f}</span>`).join('');
+
+  const ageSlotHtml = n.ageSlots && n.ageSlots !== '不明' && n.ageSlots !== '要確認'
+    ? `<p style="font-size:12px;margin:4px 0"><strong>👶 年齢別空き：</strong>${n.ageSlots}</p>` : '';
+
+  const warningHtml = (n.classification === '⚠️要注意事例あり' || (n.features||[]).includes('⚠️要注意事例あり'))
+    ? `<div class="warn-box">⚠️ <strong>要注意：</strong>2022年3月末に保育士ほぼ全員が退職・運営停止の経緯あり。見学時に運営体制を必ず確認してください。</div>` : '';
+
+  const prosHtml = (n.pros||[]).map(p=>`<li>${p}</li>`).join('');
+  const consHtml = (n.cons||[]).map(c=>`<li>${c}</li>`).join('');
+
+  const refLinks = [];
+  if (n.refUrl) refLinks.push(
+    `<a class="ref-btn ref-btn-detail" href="${n.refUrl}" target="_blank" rel="noopener">🔗 詳細・口コミページ</a>`);
+  if (n.phone) refLinks.push(
+    `<a class="ref-btn ref-btn-tel" href="tel:${n.phone}">📞 ${n.phone}</a>`);
+
+  return `
+<article class="facility">
+  <div style="display:flex;align-items:flex-start;gap:10px">
+    <div style="min-width:38px;text-align:center;padding-top:2px">${medal}</div>
+    <div style="flex:1;min-width:0">
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:5px">
+        <span class="type-badge" style="background:${cls}">${n.classification||n.type}</span>
+        <span class="score-pill">総合 ${score}/100</span>
+      </div>
+      <h3 style="margin:0 0 5px;color:#0b3d91;font-size:15px">${n.name}</h3>
+      <div style="font-size:12px;color:#334e68;display:flex;flex-wrap:wrap;gap:10px;margin-bottom:5px">
+        <span>${hl(`⭐ ${stars} ${n.reviews}点`, 'reviews')}</span>
+        <span>${hl(`📍 西新井駅 徒歩${n.distanceMin != null ? n.distanceMin+'分' : '?分'}`, 'distance')}</span>
+        <span>${hl(`🏗️ ${n.established ? n.established+'年開園' : '開園年不明'}`, 'newness')}</span>
+        <span>${hl(`⏰ ${hoursStr}`, 'hours')}</span>
+      </div>
+      <div style="margin-bottom:6px">${featureTags}</div>
+      ${warningHtml}
+      ${ageSlotHtml}
+      <p style="font-size:12px;color:#334e68;margin:4px 0;line-height:1.6">${n.reviewSum||''}</p>
+      <div class="pros-cons">
+        <div class="pros"><strong>✅ おすすめ</strong>
+          <ul style="margin:4px 0 0;padding-left:14px;font-size:11px;line-height:1.7">${prosHtml}</ul>
+        </div>
+        <div class="cons"><strong>⚠️ 注意点</strong>
+          <ul style="margin:4px 0 0;padding-left:14px;font-size:11px;line-height:1.7">${consHtml}</ul>
+        </div>
+      </div>
+      <p style="font-size:11px;color:#627d98;margin:6px 0 0">
+        📍 ${n.address||''} ｜ 定員 ${n.capacity||'?'}名 ｜ 給食：${n.feeding||'要確認'}
+      </p>
+      <div class="ref-links">${refLinks.join('')}</div>
+    </div>
+  </div>
+</article>`;
+}
+
+// ════════════════════════════════════════
+//  一覧レンダリング（フィルタ・ソート込み）
+// ════════════════════════════════════════
+function renderNurseryList() {
+  const sortKey    = document.getElementById('sortKey').value;
+  const filterType = document.getElementById('filterType').value;
+  const filterAge  = document.getElementById('filterAge').value;
+  const search     = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+  const container  = document.getElementById('nursery-list-dynamic');
+  if (!container) return;
+
+  // ── フィルタ ──
+  let list = (typeof nurseries !== 'undefined' ? nurseries : []).slice();
+
+  if (filterType === 'ninka') {
+    list = list.filter(n => ['区立','公設民営','認可私立'].includes(n.classification));
+  } else if (filterType === 'kigyou') {
+    list = list.filter(n => ['企業主導型','認可外保育園'].includes(n.classification));
+  }
+
+  if (filterAge !== '') {
+    const age = +filterAge;
+    list = list.filter(n => {
+      // 0-2歳のみ対応の認可外（すまいるオンパミード等）
+      if (n.ageSlots && n.ageSlots.includes('3歳以上不可') && age >= 3) return false;
+      const slots = parseSlots(n.ageSlots);
+      if (!slots) return true; // 不明は表示
+      return slots[age] === undefined ? false : slots[age] > 0;
+    });
+  }
+
+  if (search) {
+    list = list.filter(n =>
+      n.name.toLowerCase().includes(search) ||
+      (n.address||'').toLowerCase().includes(search) ||
+      (n.reviewSum||'').toLowerCase().includes(search)
+    );
+  }
+
+  // ── ソート ──
+  list.sort((a, b) => {
+    switch (sortKey) {
+      case 'reviews':  return (b.reviews||0) - (a.reviews||0);
+      case 'distance': return (a.distanceMin||999) - (b.distanceMin||999);
+      case 'newness':  return (b.established||0) - (a.established||0);
+      case 'hours':    return ((b.closeHour||0)-(b.openHour||0)) - ((a.closeHour||0)-(a.openHour||0));
+      case 'features': return (b.features||[]).length - (a.features||[]).length;
+      default:         return computeScore(b) - computeScore(a);
+    }
+  });
+
+  // ── 結果件数 ──
+  const total = (typeof nurseries !== 'undefined' ? nurseries : []).length;
+  document.getElementById('resultCount').textContent =
+    `${list.length} / ${total}件`;
+
+  if (!list.length) {
+    container.innerHTML = '<p class="muted">条件に一致する保育園が見つかりません。</p>';
+    return;
+  }
+
+  container.innerHTML = list.map((n, i) => buildCard(n, i + 1, sortKey)).join('');
+}
+
+// コントロールのイベント
+['sortKey','filterType','filterAge'].forEach(id =>
+  document.getElementById(id).addEventListener('change', renderNurseryList));
+document.getElementById('searchInput').addEventListener('input', renderNurseryList);
+
+// 初期描画
+renderNurseryList();
+
+// ════════════════════════════════════════
+//  ナビ アクティブ表示（IntersectionObserver）
+// ════════════════════════════════════════
+(function(){
+  const allLinks = document.querySelectorAll('.toc-nav a, .toc-topbar a');
+  if (!allLinks.length) return;
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        allLinks.forEach(a => a.classList.remove('toc-active'));
+        allLinks.forEach(a => {
+          if (a.getAttribute('href') === '#' + e.target.id)
+            a.classList.add('toc-active');
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
+})();
 </script>
 </body>
 </html>
