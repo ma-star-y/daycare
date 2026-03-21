@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>足立区西新井駅 保育園レポート</title>
 <link rel="stylesheet" href="report.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 </head>
 <body>
 
@@ -14,7 +15,7 @@
   <a href="#s-summary">📌 調査概要</a>
   <a href="#s-howto">🎯 入園HOW-TO</a>
   <a href="#s-checklist">✅ チェックリスト</a>
-  <a href="#s-map">🗺 地図</a>
+  <a href="#s-map">🗺 マップ</a>
   <a href="#s-list">🏫 保育園一覧</a>
   <a href="#s-ranking">🏆 評価軸</a>
   <div class="toc-nav-sep"></div>
@@ -102,13 +103,26 @@
   </section>
 
   <section class="map card" id="s-map">
-    <h2>地図（イメージ）</h2>
-    <div class="map-viz">
-      <!-- 実地図（外部の地図生成ページへリンク） -->
-      <p>以下リンクから住所ベースの地図（Leaflet）を開き、ボタンで位置を取得してください。</p>
-      <p><a href="nursery_map.html" target="_blank" rel="noopener">🗺 梅田・中央本町エリアの保育園マップを開く</a></p>
-      <p class="caption">※ボタンを押すと、住所を外部（OpenStreetMap Nominatim）に問い合わせしてマーカーを配置します。通信が発生しますので数秒お待ちください。</p>
+    <h2>🗺 保育園マップ</h2>
+    <p class="muted" style="margin-bottom:8px">マーカーをクリックすると園名・評価・空き状況などが表示されます。</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;font-size:12px;align-items:center">
+      <span style="display:inline-flex;align-items:center;gap:4px">
+        <svg width="14" height="14"><circle cx="7" cy="7" r="6" fill="#d4a017" stroke="#a37a00" stroke-width="1.5"/></svg>TOP3
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:4px">
+        <svg width="14" height="14"><circle cx="7" cy="7" r="6" fill="#2f855a" stroke="#1a5c3a" stroke-width="1.5"/></svg>おすすめ（4〜8位）
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:4px">
+        <svg width="14" height="14"><circle cx="7" cy="7" r="6" fill="#3182ce" stroke="#1a5ca3" stroke-width="1.5"/></svg>認可（9位〜）
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:4px">
+        <svg width="14" height="14"><circle cx="7" cy="7" r="6" fill="#805ad5" stroke="#553c9a" stroke-width="1.5"/></svg>企業型・認可外
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:4px">
+        <svg width="14" height="14"><circle cx="7" cy="7" r="6" fill="#e53e3e" stroke="#9b2c2c" stroke-width="1.5"/></svg>要注意
+      </span>
     </div>
+    <div id="nursery-map" style="height:500px;border-radius:8px;border:1px solid #dde3ed;z-index:0"></div>
   </section>
 
   <section class="list card" id="s-list">
@@ -397,6 +411,7 @@
     <p class="muted">📰 <strong>参考報道</strong>：<a href="https://www.tokyo-np.co.jp/article/172961" target="_blank" rel="noopener">東京新聞「保育士ほぼ全員退職 足立の保育所 園児受け入れ停止」</a>（いづみ保育園に関する報道）</p>
   </footer>
 </main>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="nursery_data.js"></script>
 <script>
 // ════════════════════════════════════════
@@ -588,6 +603,113 @@ document.getElementById('searchInput').addEventListener('input', renderNurseryLi
 
 // 初期描画
 renderNurseryList();
+
+// ════════════════════════════════════════
+//  保育園マップ（Leaflet + OpenStreetMap）
+// ════════════════════════════════════════
+(function() {
+  const mapEl = document.getElementById('nursery-map');
+  if (!mapEl || typeof L === 'undefined' || typeof nurseries === 'undefined') return;
+
+  // 各園の正確な座標（住所から推定）
+  const COORDS = {
+    "いづみ":                       [35.7742, 139.7888],
+    "足立ひまわり":                  [35.7750, 139.7884],
+    "西新井きらきら（本園）":         [35.7746, 139.7897],
+    "ちゃいれっく西新井駅前":         [35.7759, 139.7877],
+    "中部ひまわり":                  [35.7694, 139.7836],
+    "たんぽぽ保育所西新井南園":       [35.7656, 139.7872],
+    "梅田（区立）":                  [35.7688, 139.7956],
+    "親隣館":                       [35.7680, 139.7984],
+    "ミアヘルサ保育園ひびき梅島":     [35.7700, 139.8008],
+    "エーワン梅島":                  [35.7724, 139.7976],
+    "にじいろ保育園梅島":            [35.7716, 139.7998],
+    "バンビ保育園梅島園":            [35.7728, 139.8018],
+    "うめだ「子供の家」":             [35.7665, 139.7990],
+    "島根":                         [35.7720, 139.8026],
+    "ミアヘルサ保育園ひびき西新井":   [35.7718, 139.8030],
+    "五反野（公設民営）":            [35.7614, 139.8082],
+    "子ひばり":                     [35.7608, 139.8087],
+    "高和":                         [35.7575, 139.8118],
+    "やよい（公設民営）":            [35.7725, 139.8066],
+    "足立さくらんぼ":                [35.7722, 139.8062],
+    "こころとうたう保育園":           [35.7793, 139.7895],
+    "すまいるオンパミード西新井駅前":  [35.7762, 139.7874],
+  };
+
+  function markerColor(n) {
+    if (n.name === 'いづみ') return '#e53e3e';
+    if (['企業主導型','認可外保育園'].includes(n.classification)) return '#805ad5';
+    if (n.ranking <= 3) return '#d4a017';
+    if (n.ranking <= 8) return '#2f855a';
+    return '#3182ce';
+  }
+
+  function markerRadius(n) {
+    if (n.ranking <= 3) return 11;
+    if (n.ranking <= 8) return 9;
+    return 7;
+  }
+
+  function popupHtml(n) {
+    const score = computeScore(n);
+    const medals = ['🥇','🥈','🥉'];
+    const rankLabel = n.ranking <= 3 ? medals[n.ranking - 1] : `${n.ranking}位`;
+    const dist = n.distanceMin != null ? `徒歩${n.distanceMin}分` : '要確認';
+    const feats = (n.features || []).filter(f => !f.startsWith('⚠')).slice(0, 3).join('・');
+    const slotLabel = n.currentStatus || '要確認';
+    const slotColor = (slotLabel.includes('なし') || slotLabel.includes('満員')) ? '#e53e3e' : '#2f855a';
+    return `<div style="min-width:190px;font-size:13px;line-height:1.6">
+      <strong style="color:#0b3d91;font-size:14px">${n.name}</strong><br>
+      <span style="font-size:11px;color:#718096">${n.classification}</span><br>
+      <span>${rankLabel} ｜ ⭐${n.reviews} ｜ 📍${dist}</span><br>
+      <span style="font-size:11px;color:#4a5568">総合スコア ${score}/100</span><br>
+      ${feats ? `<span style="font-size:11px;color:#334e68">${feats}</span><br>` : ''}
+      <span style="font-size:11px;color:${slotColor};font-weight:bold">${slotLabel}</span><br>
+      ${n.refUrl ? `<a href="${n.refUrl}" target="_blank" rel="noopener" style="font-size:11px;color:#3182ce">🔗 詳細・口コミ</a>` : ''}
+    </div>`;
+  }
+
+  // マップ初期化（西新井駅中心）
+  const map = L.map('nursery-map', { zoomControl: true }).setView([35.7720, 139.7960], 14);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 19,
+  }).addTo(map);
+
+  // 西新井駅マーカー
+  L.marker([35.7757, 139.7882], {
+    icon: L.divIcon({
+      className: '',
+      html: '<div style="background:#0b3d91;color:#fff;border-radius:6px;padding:2px 6px;font-size:11px;font-weight:bold;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.4)">🚃 西新井駅</div>',
+      iconAnchor: [36, 12],
+    })
+  }).addTo(map);
+
+  // 各保育園マーカー
+  const bounds = [];
+  nurseries.forEach(n => {
+    const pos = COORDS[n.name];
+    if (!pos) return;
+    bounds.push(pos);
+    const color = markerColor(n);
+    L.circleMarker(pos, {
+      radius: markerRadius(n),
+      fillColor: color,
+      color: '#fff',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.9,
+    })
+    .bindPopup(popupHtml(n), { maxWidth: 260 })
+    .bindTooltip(n.name, { permanent: false, direction: 'top', offset: [0, -8] })
+    .addTo(map);
+  });
+
+  // 全マーカーが収まるようにズーム調整
+  if (bounds.length) map.fitBounds(bounds, { padding: [30, 30] });
+})();
 
 // ════════════════════════════════════════
 //  ナビ アクティブ表示（IntersectionObserver）
